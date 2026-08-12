@@ -1,0 +1,77 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://status.converted.in/ (probed 2026-08-12, HTTP 200),
+  https://developer.converted.in/llms.txt and the full documentation index behind
+  it, https://convertedin.com/sitemap.xml
+versioning:
+  scheme: none
+  documented: false
+  evidence: >-
+    No version segment appears in any documented path across the three contracts
+    (/convertedin/categories, /api/products, /api/webhooks/api/orders/create), and
+    no version header or media-type versioning is documented.
+  breaking_change_policy: null
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation policy, no Sunset/Deprecation headers, and no deprecated
+    operations are named. No `type: Deprecation` pointer is emitted.
+status_page:
+  present: true
+  url: https://status.converted.in/
+  provider: Better Stack
+  http_status: 200
+  fetched: '2026-08-12'
+  current_state_observed: All services are online
+  last_updated_observed: Aug 12, 2026 at 6:25pm UTC
+  services_monitored:
+  - Converted
+  - Converted Blog
+  - Flyerz
+  - Converted Affiliate
+  - Converted Orders
+  - Converted Leads
+  note: >-
+    A real, per-service status page on the company's own subdomain. It monitors
+    the PRODUCTS, not the API surfaces — neither the webhook ingest API
+    (app.converted.in) nor the developer portal is a named component.
+  incident_history: not exposed on the landing view
+  subscribe: not observed
+changelog:
+  present: false
+  url: null
+  note: >-
+    No dated changelog or release-notes page exists on developer.converted.in
+    (checked against the complete /llms.txt index) or on convertedin.com (checked
+    against /sitemap.xml). No `changelog/` artifact and no `type: ChangeLog`
+    pointer is emitted.
+sla:
+  published: false
+  url: null
+support:
+  channel: email
+  contact: info@converted.in
+  source: https://developer.converted.in/magento-or-webhooks/getting-started.md
+  note: >-
+    "In case you have any questions, facing troubles connecting to Convertedin
+    reach us on info@converted.in". No help center, forum, or ticketing portal is
+    published — help.converted.in and support.converted.in do not resolve to a
+    reachable page (404 / no DNS, probed 2026-08-12).
+sdk_decay:
+  note: >-
+    The strongest lifecycle signal available for this provider is SDK release
+    decay, not a policy page: the Android SDK last shipped 1.4.4 on 2024-10-21 and
+    the iOS SDK last shipped 1.1.2 on 2024-10-22 — both roughly 22 months stale as
+    of this pass. The browser pixel is the only actively-changing artifact
+    (sdk.js last-modified 2026-03-15).
+  see: packages/pinoffer-packages.yml
+gaps:
+- no versioning scheme
+- no deprecation policy or Sunset/Deprecation headers
+- no changelog or release notes
+- no published SLA
+- status page covers products, not API endpoints

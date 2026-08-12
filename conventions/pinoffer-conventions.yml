@@ -1,0 +1,128 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.converted.in/api-1/getting-started.md,
+  https://developer.converted.in/api-1/categories.md,
+  https://developer.converted.in/api-1/products.md,
+  https://developer.converted.in/loyalty-and-pos-integration/products.md,
+  https://developer.converted.in/api-1/webhooks.md
+note: >-
+  Read from the published docs; there is no OpenAPI to derive from. Convertedin
+  documents THREE contracts with THREE different conventions — an inconsistency
+  worth recording as-is rather than smoothing over.
+authentication:
+  style: static shared secret, three different placements
+  see: authentication/pinoffer-authentication.yml
+  inconsistency: >-
+    Store Connector puts `token` in a multipart form body; the webhook ingest API
+    puts `token` in a header; Loyalty/POS uses an `Access-Token` header. Same
+    company, three placements, none of them RFC 6750.
+idempotency:
+  supported: false
+  documented: false
+  header: null
+  note: >-
+    NO idempotency support is documented anywhere in the developer portal — no
+    Idempotency-Key header, no request-id dedupe, no at-most-once guarantee. This
+    matters most on the webhook ingest surface, where a retried `/orders/create`
+    delivery has no documented dedupe key. Because nothing is present, NO
+    `type: Idempotency` pointer is emitted in apis.yml.
+pagination:
+  supported: true
+  styles:
+  - contract: Store Connector API
+    style: page-number
+    request_params:
+    - name: page
+      type: integer
+      required: true
+      description: page number
+    - name: per_page
+      type: integer
+      required: true
+      description: limit per page (default 100)
+    request_encoding: multipart/form-data body
+    response_fields:
+    - current_page
+    - data
+    - from
+    - to
+    - last_page
+    - per_page
+    - total
+    source: https://developer.converted.in/api-1/categories.md
+  - contract: Loyalty & POS Integration API
+    style: page-number
+    request_params:
+    - name: page
+      type: integer
+      required: true
+    - name: limit
+      type: integer
+      required: true
+      description: count items per page
+    request_encoding: query string
+    response_fields:
+    - data
+    source: https://developer.converted.in/loyalty-and-pos-integration/products.md
+  inconsistency: >-
+    The page-size parameter is `per_page` on one contract and `limit` on the
+    other; the envelope is a full Laravel paginator on one and a bare `data`
+    array on the other.
+  cursor_pagination: false
+filtering:
+  supported: partial
+  documented:
+  - param: collection_id
+    contract: Loyalty & POS Integration API — Products
+    description: used to fetch only products related to this collection
+field_expansion:
+  supported: false
+  documented: false
+sparse_fieldsets:
+  supported: false
+  documented: false
+metadata:
+  supported: false
+  documented: false
+request_id_tracing:
+  supported: false
+  documented: false
+  note: No correlation/request-id header is documented on any surface.
+versioning:
+  scheme: none
+  documented: false
+  note: >-
+    No version segment in any documented path (`/convertedin/categories`,
+    `/api/products`, `/api/webhooks/api/orders/create`), no version header, and no
+    version negotiation. See lifecycle/pinoffer-lifecycle.yml.
+error_envelope:
+  documented: false
+  observed_shape: '{"msg": "<human-readable message>"}'
+  observed_on: https://app.converted.in/api/webhooks/api/orders/create (HTTP 401, probed 2026-08-12)
+  rfc9457: false
+  content_type_observed: application/json
+  note: >-
+    The docs publish only 200 examples. The single non-2xx shape recorded here was
+    observed live, not documented. See errors/pinoffer-problem-types.yml.
+rate_limit_signaling:
+  documented: false
+  headers: []
+  see: rate-limits/pinoffer-rate-limits.yml
+data_conventions:
+  key_casing: snake_case
+  timestamps: ISO 8601 with offset (e.g. '2021-10-01T16:42:46-04:00') on Loyalty/POS; 'YYYY-MM-DD HH:MM:SS' on webhook payloads
+  timestamp_inconsistency: true
+  money: strings ('199.00', '50286.0000') alongside integers/floats in other fields
+  currency: ISO 4217 code in a sibling `currency` field
+  ids: mixed — integers on Loyalty/POS payloads, quoted strings on webhook payloads
+  case_sensitivity_warning: >-
+    "These keys are specified to use as defined in docs, they are case-sensitive.
+    Any change in these keys may cause issues during data sync"
+    (https://developer.converted.in/api-1/categories.md)
+cross_links:
+  authentication: authentication/pinoffer-authentication.yml
+  errors: errors/pinoffer-problem-types.yml
+  lifecycle: lifecycle/pinoffer-lifecycle.yml
+  rate_limits: rate-limits/pinoffer-rate-limits.yml
+  webhooks: asyncapi/pinoffer-webhooks.yml

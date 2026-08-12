@@ -1,0 +1,119 @@
+generated: '2026-08-12'
+method: probed
+source: live GET of each /.well-known/ path on every Convertedin host
+result: >-
+  NO HITS. Every /.well-known/ path probed returned 404 on every Convertedin
+  host, or returned a 200 that was an HTML single-page-app shell rather than a
+  document. No WellKnown or SecurityTxt pointer is emitted in apis.yml — this
+  file records a verified ABSENCE, not a presence.
+hosts:
+- host: https://app.converted.in
+  note: 'Laravel application host; also serves the webhook ingest API.'
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://developer.converted.in
+  note: 'GitBook-hosted developer documentation. Serves a real /llms.txt (200, text/plain) — captured in llms/.'
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    file: ../llms/pinoffer-llms.txt
+    content_type: text/plain; charset=utf-8
+- host: https://convertedin.com
+  note: 'Framer-hosted marketing site.'
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://converted.in
+  note: >-
+    Apex of the product domain. Presents an incomplete TLS chain to a strict
+    client (curl exit 60, "unable to get local issuer certificate"); probed with
+    verification relaxed. All paths 404.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://app-flyerz.converted.in
+  note: >-
+    FALSE POSITIVE HOST. This Angular single-page app answers HTTP 200 with the
+    same HTML shell for EVERY path, including all /.well-known/* paths,
+    /openapi.json and /llms.txt. Every 200 below is the SPA catch-all, not a
+    document, and none is treated as a hit.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    document: false
+    reason: html-spa-shell
+  - path: /.well-known/openid-configuration
+    status: 200
+    document: false
+    reason: html-spa-shell
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    document: false
+    reason: html-spa-shell
+  - path: /.well-known/api-catalog
+    status: 200
+    document: false
+    reason: html-spa-shell
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    document: false
+    reason: html-spa-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    document: false
+    reason: html-spa-shell
+  - path: /.well-known/agent.json
+    status: 200
+    document: false
+    reason: html-spa-shell

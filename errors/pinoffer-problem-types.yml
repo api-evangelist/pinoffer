@@ -1,0 +1,76 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Live probes of https://app.converted.in/api/webhooks/api/* on 2026-08-12. The
+  Convertedin developer portal publishes NO error reference and NO non-2xx
+  response examples on any page, so nothing here could be derived from docs or
+  from an OpenAPI (there is none).
+format: proprietary
+rfc9457: false
+envelope:
+  shape: '{"msg": "<human-readable message>"}'
+  fields:
+  - name: msg
+    type: string
+    description: Human-readable message. No machine-readable code, type URI, or field pointer.
+  content_type: application/json
+  stable_codes: false
+  note: >-
+    There is no error CODE of any kind — a client can only string-match `msg`,
+    which is the weakest possible contract for an automated or agent consumer.
+problems:
+- status: 401
+  title: Missing required header
+  detail_observed: 'please send in header [x-shop-domain]'
+  surface: webhook-ingest
+  evidence:
+    url: https://app.converted.in/api/webhooks/api/orders/create
+    method: POST
+    http_status: 401
+    fetched: '2026-08-12'
+  remediation: >-
+    Send both the `token` header issued at onboarding and the `X-Shop-Domain`
+    header naming the sending store.
+  documented_by_provider: false
+- status: 405
+  title: Method Not Allowed
+  detail_observed: null
+  surface: webhook-ingest
+  evidence:
+    url: https://app.converted.in/api/webhooks/api/orders/create
+    method: GET
+    http_status: 405
+    fetched: '2026-08-12'
+  remediation: All webhook ingest endpoints are POST-only.
+  documented_by_provider: false
+- status: 404
+  title: Not Found
+  detail_observed: 'Laravel HTML "Not Found" page'
+  surface: webhook-ingest
+  evidence:
+    url: https://app.converted.in/api/webhooks/api/
+    method: POST
+    http_status: 404
+    fetched: '2026-08-12'
+  remediation: >-
+    Only leaf event paths are routable (e.g. /orders/create); the collection root
+    is not. Note this response is HTML, not JSON — the error content type is not
+    consistent across statuses.
+  documented_by_provider: false
+- status: 419
+  title: Page Expired (CSRF token mismatch)
+  detail_observed: 'Laravel HTML "Page Expired" page'
+  surface: web-application (app.converted.in/login, /register)
+  evidence:
+    url: https://app.converted.in/login
+    method: POST
+    http_status: 419
+    fetched: '2026-08-12'
+  remediation: Browser session flow, not an API surface. Recorded for completeness.
+  documented_by_provider: false
+gaps:
+- no published error reference page anywhere in the developer portal
+- no error codes — only free-text `msg`
+- no documented 4xx/5xx examples on any endpoint page (docs show 200 only)
+- error content type is inconsistent (JSON on 401, HTML on 404)
+- no validation-error shape documented for the paginated Store Connector endpoints

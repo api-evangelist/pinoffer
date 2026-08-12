@@ -1,0 +1,130 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.converted.in/llms.txt (docs index), plus registry metadata
+  read live from trunk.cocoapods.org, jitpack.io, api.github.com and the
+  CloudFront distribution the pixel docs name.
+note: >-
+  Convertedin (the company behind the "Pinoffer" network entry — PinOffer is the
+  company's former name, still used by 500 Global, Crunchbase and LinkedIn) ships
+  first-party client libraries for Android, iOS and the browser. None are on npm,
+  PyPI, Maven Central, NuGet, RubyGems, crates.io or Packagist; distribution is
+  JitPack (Android), CocoaPods + Swift Package Manager (iOS) and an unpinned
+  CloudFront script tag (web).
+packages:
+- language: kotlin
+  registry: jitpack
+  name: com.github.convertedin:android-pixel-sdk
+  url: https://github.com/convertedin/android-pixel-sdk
+  install: implementation 'com.github.convertedin:android-pixel-sdk:1.4.4'
+  official: true
+  version: 1.4.4
+  published: '2024-10-21'
+  source: >-
+    https://jitpack.io/api/builds/com.github.convertedin/android-pixel-sdk/latest
+    (latestOk 1.4.4); release date from the matching GitHub tag/release on
+    convertedin/android-pixel-sdk.
+  note: >-
+    Distributed via JitPack from the company's own GitHub org, not Maven Central.
+    Latest release 1.4.4 (2024-10-21); no release in the ~22 months since.
+- language: swift
+  registry: cocoapods
+  name: ConvertedinMobileSDK
+  url: https://cocoapods.org/pods/ConvertedinMobileSDK
+  install: pod 'ConvertedinMobileSDK'
+  official: true
+  version: 1.1.2
+  published: '2024-10-22'
+  source: https://trunk.cocoapods.org/api/v1/pods/ConvertedinMobileSDK
+  note: >-
+    First-party confirmed by the CocoaPods trunk owner record — e.ali@converted.in
+    (Eslam Ali). 13 published versions, 1.0.0 (2023-09-25) through 1.1.2
+    (2024-10-22).
+- language: swift
+  registry: swift-package-manager
+  name: iOS_ConvertedinMobileSDK
+  url: https://github.com/iOS-convertedin-eslamali/iOS_ConvertedinMobileSDK
+  install: >-
+    Xcode > File > Swift Packages > Add Package Dependency >
+    https://github.com/iOS-convertedin-eslamali/iOS_ConvertedinMobileSDK.git
+  official: true
+  version: 1.1.2
+  published: '2024-10-22'
+  source: >-
+    https://developer.converted.in/ios/getting-started.md names this repository as
+    the SPM source; tags read from api.github.com repo tags.
+  note: >-
+    Same library as the CocoaPods pod, distributed from a personal GitHub account
+    (an employee's, per the CocoaPods owner email) rather than the convertedin
+    org — a supply-chain provenance gap a consumer cannot resolve from the docs.
+- language: javascript
+  registry: cdn
+  name: Convertedin Pixel Client SDK (sdk.js)
+  url: https://deujvzkogpkk9.cloudfront.net/sdk.js
+  install: <script src="https://deujvzkogpkk9.cloudfront.net/sdk.js"></script>
+  official: true
+  version: null
+  published: null
+  source: https://developer.converted.in/pixel/client-sdk.md
+  note: >-
+    UNPINNED. The documented script tag carries no version and the CloudFront
+    distribution exposes no metadata endpoint, so a consumer cannot tell which
+    build they are loading. Probed 2026-08-12: HTTP 200, 262,959 bytes,
+    text/javascript, last-modified Sun, 15 Mar 2026 11:23:18 GMT,
+    etag 94fbb387fd01a45945410c858279ee0e. The last-modified date is the only
+    currency signal available and is not a release version.
+- language: php
+  registry: github
+  name: convertedin/laravel-odoo-api
+  url: https://github.com/convertedin/laravel-odoo-api
+  install: 'composer require convertedin/laravel-odoo-api  # requires a VCS repository entry'
+  official: true
+  version: null
+  published: null
+  source: >-
+    composer.json in https://github.com/convertedin/laravel-odoo-api (author
+    ConvertedIn <info@converted.in>); repo.packagist.org/p2/convertedin/laravel-odoo-api.json
+    returned HTTP 404.
+  note: >-
+    Checked, nothing to record: the package declares a Composer name but is NOT
+    published to Packagist, and the repository carries no tags, so there is no
+    resolvable version. This is an internal Odoo/ERP connector rather than a
+    Convertedin API client.
+- language: php
+  registry: github
+  name: convertedin/convertedin-facebook
+  url: https://github.com/convertedin/facebook-integration
+  install: 'composer require convertedin/convertedin-facebook  # requires a VCS repository entry'
+  official: true
+  version: 0.1.0-beta
+  published: null
+  source: >-
+    composer.json version field in https://github.com/convertedin/facebook-integration
+    (author Mohamed Ashraf <m.ashraf@converted.in>); repo.packagist.org returned
+    HTTP 404 for convertedin/convertedin-facebook.
+  note: >-
+    Version read from the committed composer.json only — not from a registry, and
+    no publication date exists because the package is not on Packagist. A Facebook
+    Ads integration library, not a Convertedin API client.
+registries_checked:
+- registry: npm
+  result: no first-party package found
+- registry: pypi
+  result: no first-party package found
+- registry: maven-central
+  result: 'no first-party artifact; Android SDK is distributed via JitPack instead'
+- registry: nuget
+  result: no first-party package found
+- registry: rubygems
+  result: no first-party package found
+- registry: crates.io
+  result: no first-party package found
+- registry: pkg.go.dev
+  result: no first-party module found
+- registry: packagist
+  result: 'HTTP 404 for both convertedin/* Composer names'
+- registry: cocoapods
+  result: 'HIT — ConvertedinMobileSDK 1.1.2'
+- registry: jitpack
+  result: 'HIT — com.github.convertedin:android-pixel-sdk 1.4.4'
+official_sdk_count: 4

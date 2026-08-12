@@ -1,0 +1,49 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Full sweep of the Convertedin developer portal (every page in
+  https://developer.converted.in/llms.txt) plus live response-header inspection of
+  https://app.converted.in/api/webhooks/api/orders/create on 2026-08-12.
+limit_count: 0
+documented: false
+note: >-
+  HONEST ZERO. Convertedin publishes no rate limits anywhere in its developer
+  documentation, and the live webhook ingest endpoint returned no rate-limit
+  headers on an anonymous request. There is no number to record and no runtime
+  signal for a client to read — an agent calling this API cannot learn its budget
+  before or during a run.
+limits: []
+response_headers:
+  observed: []
+  checked:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - Retry-After
+  result: none present
+exhaustion_status_code: not documented
+retry_guidance: not documented
+backoff_guidance: not documented
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - url: https://app.converted.in/api/webhooks/api/orders/create
+    method: POST
+    http_status: 401
+    rate_limit_headers: none
+  - url: https://developer.converted.in/llms.txt
+    http_status: 200
+    note: >-
+      Complete documentation index; no rate-limit, throttling, quota or
+      Retry-After page is listed, and no endpoint page mentions a limit.
+related:
+  pagination_defaults:
+    note: >-
+      The only volume control the docs publish is a pagination default, which is
+      not a rate limit: `per_page` on the Store Connector API defaults to 100.
+    source: https://developer.converted.in/api-1/categories.md

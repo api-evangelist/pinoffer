@@ -1,0 +1,34 @@
+# ConvertedIn | DOCS
+
+## ConvertedIn | DOCS
+
+- [Overview](https://developer.converted.in/master.md)
+- [Integrating Firebase Cloud Messaging for Push Notifications](https://developer.converted.in/before-you-start/integrating-firebase-cloud-messaging-for-push-notifications.md)
+- [Getting started with Android SDK](https://developer.converted.in/android/getting-started.md)
+- [Getting started with the iOS SDK](https://developer.converted.in/ios/getting-started.md)
+- [Getting Started](https://developer.converted.in/woocommerce-plugin/getting-started.md)
+- [Plugin installation steps](https://developer.converted.in/woocommerce-plugin/plugin-installation-steps.md): Here is how to install our WordPress Plugin
+- [Getting Started](https://developer.converted.in/shopify/wip.md): Connect shopify store with Convertedin.
+- [Connect your store using API, Getting started](https://developer.converted.in/api-1/getting-started.md): You can connect your custom made store to Convertedin by creating an API with the following instructions
+- [Categories](https://developer.converted.in/api-1/categories.md): Allow convertedin to get your product categories
+- [Products](https://developer.converted.in/api-1/products.md): Allow convertedin to get your products
+- [Customers](https://developer.converted.in/api-1/customers.md): Allow convertedin to get your customer's data
+- [Orders](https://developer.converted.in/api-1/orders.md): Allow convertedin to get your orders
+- [Webhooks](https://developer.converted.in/api-1/webhooks.md)
+- [Getting started](https://developer.converted.in/magento-or-webhooks/getting-started.md): Before you start you have to consider some points
+- [Webhook](https://developer.converted.in/magento-or-webhooks/getting-started-1.md): Before you start you have to consider some points
+- [Categories](https://developer.converted.in/magento-or-webhooks/categories.md)
+- [Products](https://developer.converted.in/magento-or-webhooks/products.md)
+- [Orders](https://developer.converted.in/magento-or-webhooks/orders.md)
+- [Customers](https://developer.converted.in/magento-or-webhooks/customers.md)
+- [Update webhook status](https://developer.converted.in/magento-or-webhooks/update-webhook-status.md)
+- [Getting started](https://developer.converted.in/salla/getting-started.md): Before you start you have to consider some points
+- [Store Info](https://developer.converted.in/loyalty-and-pos-integration/store-info.md): Get the store info.
+- [Products](https://developer.converted.in/loyalty-and-pos-integration/products.md): Retrieve a list of products.
+- [Orders](https://developer.converted.in/loyalty-and-pos-integration/orders.md): Retrieve a list of orders.
+- [Customers](https://developer.converted.in/loyalty-and-pos-integration/customers.md): Retrieve a list of customers.
+- [Getting Started](https://developer.converted.in/pixel/getting-started.md): Converted.in Pixel is a piece of code that you place on your website, help to understand people actions, find new customers, and drive more sales.
+- [Client SDK](https://developer.converted.in/pixel/client-sdk.md)
+- [Integrate ConvertedIn Pixel using GTM](https://developer.converted.in/pixel/integrate-convertedin-pixel-using-gtm.md): if you don't have a GTM already setup you can use
+- [Shopify Integration for Initiate checkout Event](https://developer.converted.in/pixel/shopify-integration-for-initiate-checkout-event.md): Accourding to Shopify restriction on checkout page you can configure the \`Initiate checkout\` event on your shopify store.
+- [Getting Started](https://developer.converted.in/dsp/getting-started.md): Integrate with Convertedin DSP.

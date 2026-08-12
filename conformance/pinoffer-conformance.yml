@@ -1,0 +1,108 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.converted.in/llms.txt and every page it indexes,
+  https://convertedin.com/archive/Privacy-Policy,
+  https://convertedin.com/archive/Terms-of-Use, https://www.converted.in/terms,
+  plus live probes of every Convertedin host on 2026-08-12.
+note: >-
+  Assessed against the docs and live probes — there is no OpenAPI, AsyncAPI or
+  vocabulary artifact in this repo to derive from. Convertedin names NO security
+  or privacy CERTIFICATION anywhere on its public surface (no SOC 2, ISO 27001,
+  PCI DSS, HIPAA or FedRAMP claim; trust.converted.in does not resolve), so no
+  `type: Compliance` pointer is emitted. The GDPR entry below is a stated legal
+  commitment in the privacy policy, not an audited certification.
+standards:
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No OAuth 2.0 surface. All four documented credentials are static shared
+    secrets (see authentication/pinoffer-authentication.yml). /.well-known/oauth-authorization-server
+    returned 404 on every host.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on every Convertedin host (probed 2026-08-12).
+- id: rfc6750-bearer
+  conforms: false
+  evidence: >-
+    Credentials are carried as a form-data field (`token`), a bare `token` header,
+    an `Access-Token` header, and a URL query parameter — none is
+    `Authorization: Bearer`.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Observed error body is `{"msg": "..."}` with content-type application/json,
+    not application/problem+json, and carries no type/title/status/detail members.
+    Some errors return HTML instead. See errors/pinoffer-problem-types.yml.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on all of app.converted.in, developer.converted.in, converted.in and convertedin.com.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header and no deprecation policy is published.
+- id: rfc9615-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returned 404 on every host.
+- id: openapi
+  conforms: false
+  evidence: >-
+    Full contract-discovery sweep on 2026-08-12 — /openapi.json, /openapi.yaml,
+    /swagger.json, /v1/openapi.json, /api-docs, /redoc against app.converted.in,
+    developer.converted.in, convertedin.com, converted.in and
+    app-flyerz.converted.in — produced no parseable spec. The only 200s came from
+    the app-flyerz Angular SPA catch-all, which returns the same HTML shell for
+    every path.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No AsyncAPI document. A webhook catalogue IS documented and is captured in
+    asyncapi/pinoffer-webhooks.yml (type Webhooks, not AsyncAPI).
+- id: graphql
+  conforms: false
+  evidence: No /graphql surface is documented or discoverable on any host.
+- id: mcp
+  conforms: false
+  evidence: No hosted or remote MCP server is published, and there is no OpenAPI from which to derive candidate tools.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json returned 404 on every
+    real host. app-flyerz.converted.in returned 200 for both, but the body is the
+    SPA HTML shell, not an AgentCard — rejected as a false positive. Nothing is
+    written to a2a/.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    https://developer.converted.in/llms.txt returns HTTP 200, text/plain, and is a
+    valid llms.txt index of 31 documentation pages. Every page is also available
+    as Markdown by appending `.md`. This is the single strongest agent-readable
+    artifact Convertedin publishes; saved verbatim to llms/pinoffer-llms.txt.
+- id: pagination
+  conforms: true
+  partial: true
+  evidence: >-
+    Page-number pagination is documented on both read contracts, but with
+    different parameter names (`per_page` vs `limit`) and different response
+    envelopes. See conventions/pinoffer-conventions.yml.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No idempotency key, dedupe key, or at-most-once guarantee is documented on any
+    surface, including the webhook ingest API where retries are most likely.
+- id: webhook-signing
+  conforms: false
+  evidence: >-
+    Webhook deliveries are authenticated with a static `token` header and an
+    `X-Shop-Domain` header. No HMAC signature, no timestamp, no replay protection.
+- id: gdpr
+  conforms: claimed
+  certified: false
+  evidence: >-
+    "General Data Protection Regulation — Convertedin fully supports the privacy
+    rights of our customers and users" (https://convertedin.com/archive/Privacy-Policy),
+    and clause 7.3 "Applicability of GDPR" in the Terms of Use
+    (https://www.converted.in/terms). A stated commitment in legal copy; no DPA
+    link, no sub-processor list, and no supervisory-authority or representative
+    details are published.
+certifications_found: []
+trust_center: none published (trust.converted.in does not resolve; no /security, /trust or /compliance page)

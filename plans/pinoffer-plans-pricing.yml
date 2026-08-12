@@ -1,0 +1,77 @@
+generated: '2026-08-12'
+method: searched
+source: https://www.converted.in/pricing
+fetched: '2026-08-12'
+http_status: 200
+note: >-
+  Convertedin publishes a three-tier pricing page for the PLATFORM. There is no
+  API-specific pricing, no metered API pricing, and no machine-readable
+  pricing/catalog endpoint. API access is a feature gated to the paid tiers — the
+  Growth tier explicitly lists "API integration (Magento, custom e-commerce)",
+  which means the developer surface documented at developer.converted.in is not
+  reachable on the free tier. Two of the three tiers publish no number.
+currency: USD
+billing_model: revenue-share-threshold on entry tier, contact-sales above it
+plan_count: 3
+plans:
+- name: Free Trial
+  price: 0
+  currency: USD
+  billing_period: 'until $500 in revenues is generated through Convertedin'
+  price_disclosed: true
+  included:
+  - Basic store analytics
+  - E-commerce pixel
+  - Basic segmentation
+  - Single social media ads platform (Facebook | Instagram)
+  - Basic catalog intelligence
+  platforms:
+  - Shopify
+  - WooCommerce
+  api_access: false
+  note: >-
+    The quota is expressed as attributed revenue, not requests or seats:
+    "Free for first $500 in revenues through Convertedin".
+- name: Growth
+  price: null
+  currency: USD
+  billing_period: null
+  price_disclosed: false
+  price_note: Contact Sales — no figure published. Marked "Recommended Plan".
+  included:
+  - Everything in Free Trial
+  - Manage form popups
+  - Advanced segmentation engine
+  - Multi social media ads platforms (TikTok, Snapchat)
+  - Search engine ads (Google Dynamic Search)
+  - Advanced catalog intelligence
+  - SMS automation engine
+  - Email automation engine
+  - Ads insight & Funnel visualization
+  - API integration (Magento, custom e-commerce)
+  - Dedicated account manager
+  - Support (Chat, Email, Tickets)
+  api_access: true
+  api_access_evidence: 'tier feature line "API integration (Magento, custom e-commerce)"'
+- name: Enterprise
+  price: null
+  currency: USD
+  billing_period: null
+  price_disclosed: false
+  price_note: Contact Sales — no figure published.
+  included:
+  - Server-to-server pixel communication
+  - ML segmentation
+  - Multi-channel automation
+  - AI recommendation engine
+  - Attribution models
+  - Dedicated account strategist
+  api_access: true
+overage: not published
+limits_attached_to_tier: not published as numbers — tiers are gated by feature, not by quota
+gaps:
+- two of three tiers publish no price
+- no per-request, per-seat, or per-contact quota published on any tier
+- no overage terms published
+- no machine-readable pricing or product-catalog endpoint
+- no self-service checkout — paid tiers route to a sales conversation

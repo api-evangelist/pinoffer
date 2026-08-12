@@ -1,0 +1,88 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.converted.in/pixel/client-sdk.md,
+  https://developer.converted.in/pixel/getting-started.md,
+  https://developer.converted.in/pixel/integrate-convertedin-pixel-using-gtm.md,
+  https://developer.converted.in/pixel/shopify-integration-for-initiate-checkout-event.md,
+  https://developer.converted.in/dsp/getting-started.md
+note: >-
+  Client-side and embeddable surfaces, distinct from the mobile/PHP SDKs recorded
+  in packages/. Convertedin's real developer surface is weighted toward
+  drop-in browser embeds rather than a callable API.
+families:
+- family: Pixel
+  description: >-
+    Browser tracking tag. A single global function `ciq(...)` initialised with a
+    pixel key, used for commerce event tracking, visitor identity, and an
+    identity-capture popup.
+  loader:
+    type: script-tag
+    src: https://deujvzkogpkk9.cloudfront.net/sdk.js
+    pinned: false
+    probed: '2026-08-12'
+    http_status: 200
+    size_bytes: 262959
+    last_modified: '2026-03-15'
+  init: ciq("init", "{your-pixel-key-goes-here}")
+  components:
+  - name: Event tracker
+    api: ciq("track", "EventName", data={})
+    events:
+    - PageView
+    - ViewContent
+    - AddToCart
+    - InitiateCheckout
+    - Purchase
+    required_fields_by_event:
+      ViewContent: content[].id, content[].quantity, currency, value
+      AddToCart: content[].id, content[].quantity, currency, value
+      InitiateCheckout: content[].id, content[].quantity, currency, value
+      Purchase: content[].id, content[].quantity, order_id, currency, value
+  - name: Identity
+    api: "ciq('identity', {store_customer_id}, { phone: \"\", email: \"\" })"
+    description: Associates an authenticated visitor with their store customer record for ad retargeting.
+  - name: Popup Identity
+    type: hosted-prebuilt-ui
+    description: >-
+      A modal that asks an anonymous visitor for email and phone so they can be
+      retargeted by email or SMS. Suppressed once submitted. Copy, colours and
+      language are configured from the Convertedin dashboard, not in code.
+    configurable_from: Convertedin dashboard
+  - name: Facebook Pixel bridge
+    description: >-
+      Forwards Convertedin-captured events into a configured Facebook pixel with
+      attribution properties. Enabled from the dashboard pixel page.
+  installation_paths:
+  - direct script tag
+  - Google Tag Manager
+  - Shopify (InitiateCheckout configured separately due to Shopify checkout-page restrictions)
+- family: Flyerz DSP Web SDK
+  description: >-
+    The Convertedin DSP surfaced as an embeddable iframe — a whole
+    self-service ad-buying application dropped into a partner's site.
+  loader:
+    type: iframe
+    src: https://app-flyerz.converted.in/?token=x
+    required_attributes:
+      allow: clipboard-read; clipboard-write
+    note: >-
+      The `allow` attribute is required only if clipboard copy is used inside the
+      iframe. The token is a portal-config value issued by hand ("please ask for
+      that").
+  end_user_flow:
+  - choose country and language
+  - register with mobile number
+  - verify by SMS OTP
+  - provide name
+  - navigate to wallet or homepage
+  - contact support
+  - link Facebook account to start making ads
+  hosted_ui: true
+  white_label: partial — country/language selectable; no documented theming API
+gaps:
+- the pixel loader URL is unversioned, so a site cannot pin a build
+- no integrity (SRI) hash is published for the script tag
+- no npm/ESM distribution of the pixel — script tag only
+- the Flyerz iframe has no documented postMessage or JS API for the host page
+- popup and pixel behaviour are configured in a dashboard, not in code, so they are not reproducible from a repo

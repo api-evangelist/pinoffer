@@ -1,0 +1,265 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  Derived from the JSON payload examples published on
+  https://developer.converted.in/api-1/categories.md, /api-1/products.md,
+  /api-1/customers.md, /api-1/orders.md, /api-1/webhooks.md,
+  /loyalty-and-pos-integration/store-info.md, /products.md, /orders.md,
+  /customers.md — there is no OpenAPI in this repo to derive $ref links from, so
+  relationships are read from id-reference fields and nested arrays in the
+  documented examples.
+note: >-
+  This is the commerce data core Convertedin syncs OUT of a merchant's store. It
+  is not Convertedin's own product data model; it is the shape a merchant must
+  expose (Store Connector / Loyalty & POS) or push (webhooks) for the platform to
+  work. Field lists are those that appear in the published examples only — not an
+  exhaustive schema, because none is published.
+entities:
+- name: Store
+  documented_at: /loyalty-and-pos-integration/store-info.md
+  id_field: id
+  fields:
+  - id
+  - name
+  - email
+  - domain
+  - address
+  - zip
+  - city
+  - country_code
+  - country_name
+  - currency
+  - phone
+  - primary_locale
+  - locales
+  - timezone
+  - shop_owner
+  - sub_domain
+  - force_ssl
+  - created_at
+  - updated_at
+  relationships:
+  - type: has_many
+    target: Product
+  - type: has_many
+    target: Customer
+  - type: has_many
+    target: Order
+  - type: has_many
+    target: Category
+- name: Category
+  aliases:
+  - Collection
+  documented_at: /api-1/categories.md, /api-1/webhooks.md (Collection payload)
+  id_field: id
+  fields:
+  - id
+  - title
+  - handle
+  - content
+  - subcategories
+  - taxonomy
+  - image
+  - available
+  - published_at
+  - updated_at
+  relationships:
+  - type: has_many
+    target: Category
+    via: subcategories
+    note: self-referential, arbitrarily nested
+  - type: has_many
+    target: Product
+  naming_inconsistency: >-
+    The same entity is called `Category` on the Store Connector API and
+    `Collection` on the webhook API (/collections/create|update|delete).
+- name: Product
+  documented_at: /api-1/products.md, /loyalty-and-pos-integration/products.md, /api-1/webhooks.md
+  id_field: id
+  fields:
+  - id
+  - title
+  - handle
+  - content
+  - vendor
+  - status
+  - available
+  - tags
+  - meta
+  - price
+  - compare_at_price
+  - full_permalink
+  - app_links
+  - images
+  - image
+  - variants
+  - published_at
+  - created_at
+  - updated_at
+  relationships:
+  - type: has_many
+    target: ProductVariant
+    via: variants
+  - type: has_many
+    target: ProductImage
+    via: images
+  - type: belongs_to
+    target: Category
+    via: collection_id
+    note: 'exposed as the optional `collection_id` filter on GET /api/products'
+- name: ProductVariant
+  documented_at: /loyalty-and-pos-integration/products.md
+  id_field: id
+  fields:
+  - id
+  - product_id
+  - title
+  - price
+  - compare_at_price
+  - sku
+  - barcode
+  - position
+  - grams
+  - weight
+  - weight_unit
+  - inventory_quantity
+  - image_id
+  - created_at
+  - updated_at
+  relationships:
+  - type: belongs_to
+    target: Product
+    via: product_id
+  - type: belongs_to
+    target: ProductImage
+    via: image_id
+- name: ProductImage
+  documented_at: /api-1/webhooks.md
+  id_field: null
+  fields:
+  - width
+  - height
+  - path
+  - src
+  relationships:
+  - type: belongs_to
+    target: Product
+- name: Customer
+  documented_at: /api-1/customers.md, /loyalty-and-pos-integration/customers.md, /api-1/webhooks.md
+  id_field: id
+  fields:
+  - id
+  - email
+  - phone
+  - first_name
+  - last_name
+  - gender
+  - orders_count
+  - total_spent
+  - currency
+  - registered_at
+  relationships:
+  - type: has_many
+    target: Order
+  identity_note: >-
+    The pixel `ciq('identity', ...)` call keys on the store's own customer id plus
+    email and phone, so `id` is the cross-surface join key between web tracking
+    and synced commerce data.
+- name: Order
+  documented_at: /api-1/orders.md, /loyalty-and-pos-integration/orders.md, /api-1/webhooks.md
+  id_field: id
+  fields:
+  - id
+  - ordered_at
+  - total_price
+  - subtotal_price
+  - total_tax
+  - total_discounts
+  - taxes_included
+  - currency
+  - country_code
+  - phone
+  - contact_email
+  - line_items
+  relationships:
+  - type: has_many
+    target: OrderLineItem
+    via: line_items
+  - type: belongs_to
+    target: Customer
+    via: contact_email / phone
+    note: >-
+      The documented Order payload carries NO customer_id. The join to Customer is
+      by contact_email or phone, which is a soft key — a real modelling gap.
+    confidence: medium
+- name: OrderLineItem
+  documented_at: /api-1/webhooks.md
+  id_field: order_product_id
+  fields:
+  - order_product_id
+  - order_id
+  - product_id
+  - original_id
+  - name
+  - model
+  - quantity
+  - price
+  - total
+  - tax
+  - reward
+  - sku
+  - barcode
+  - image
+  - weight
+  - width
+  - height
+  - length
+  - weight_class_id
+  - product_status
+  - product_name
+  - added_by_user_type
+  - storable
+  - extra_details
+  - code_generator
+  relationships:
+  - type: belongs_to
+    target: Order
+    via: order_id
+  - type: belongs_to
+    target: Product
+    via: product_id
+- name: PixelEvent
+  documented_at: /pixel/client-sdk.md
+  id_field: null
+  fields:
+  - content[].id
+  - content[].quantity
+  - content[].name
+  - content[].category
+  - currency
+  - value
+  - order_id
+  event_types:
+  - PageView
+  - ViewContent
+  - AddToCart
+  - InitiateCheckout
+  - Purchase
+  relationships:
+  - type: belongs_to
+    target: Product
+    via: content[].id
+  - type: belongs_to
+    target: Order
+    via: order_id
+  - type: belongs_to
+    target: Customer
+    via: ciq('identity', customer_id, {email, phone})
+entity_count: 9
+id_prefixes: none — all identifiers are opaque integers or numeric strings, with no typed prefix
+gaps:
+- no schema document of any kind (no OpenAPI, no JSON Schema) — every field above is read from an example payload
+- id types are inconsistent across surfaces (integers on Loyalty/POS, quoted strings on webhooks)
+- Order carries no customer foreign key; the join is by email/phone
+- the same entity is named Category on one contract and Collection on another
+- no field-level nullability, format, or enum documentation

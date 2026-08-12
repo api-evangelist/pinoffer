@@ -1,0 +1,118 @@
+generated: '2026-08-12'
+method: searched
+source: https://developer.converted.in/api-1/webhooks.md
+note: >-
+  Convertedin publishes NO AsyncAPI document — probed /asyncapi.yaml,
+  /asyncapi.json and the GitHub org (github.com/convertedin, 5 public repos, none
+  a spec) with no hit. What it does publish is a documented webhook INGEST
+  catalog: the merchant's storefront POSTs commerce events INTO Convertedin. This
+  file captures that catalog verbatim from the docs, so `type: Webhooks` is wired
+  and `type: AsyncAPI` is not.
+surface:
+  direction: inbound-to-provider
+  description: >-
+    The store (Magento, Salla, or a custom platform) is the SENDER; Convertedin is
+    the RECEIVER. This is the inverse of the usual webhook shape and is why there
+    is no subscription/registration API here — the merchant configures the target
+    in its own platform extension.
+  base_url: https://app.converted.in/api/webhooks/api/
+  method: POST
+  content_type: application/json
+  headers:
+  - name: Content-Type
+    value: application/json
+    required: true
+  - name: token
+    description: Fixed token issued by the Convertedin platform after onboarding.
+    required: true
+  - name: X-Shop-Domain
+    description: The sending store's domain, e.g. store-name.com.
+    required: true
+x-evidence:
+  probed: '2026-08-12'
+  checks:
+  - url: https://app.converted.in/api/webhooks/api/orders/create
+    method: POST
+    http_status: 401
+    body: '{"msg":"please send in header [x-shop-domain]"}'
+    note: >-
+      Live and enforcing auth — an anonymous POST is rejected with a named missing
+      header. This confirms the documented base URL and the documented header
+      contract are real and deployed, not stale documentation.
+  - url: https://app.converted.in/api/webhooks/api/orders/create
+    method: GET
+    http_status: 405
+    note: Method Not Allowed — confirms POST-only, as documented.
+  - url: https://app.converted.in/api/webhooks/api/
+    method: POST
+    http_status: 404
+    note: The collection root is not routable; only the leaf event paths are.
+events:
+- path: /orders/create
+  event: order.created
+  description: when order created
+  payload: Order
+- path: /orders/update
+  event: order.updated
+  description: when order updated
+  payload: Order
+- path: /orders/delete
+  event: order.deleted
+  description: when order deleted
+  payload: Order
+- path: /customers/create
+  event: customer.created
+  description: when customer created
+  payload: Customer
+- path: /customers/update
+  event: customer.updated
+  description: when customer updated
+  payload: Customer
+- path: /customers/delete
+  event: customer.deleted
+  description: when customer deleted
+  payload: Customer
+- path: /products/create
+  event: product.created
+  description: when product created
+  payload: Product
+- path: /products/update
+  event: product.updated
+  description: when product updated
+  payload: Product
+- path: /products/delete
+  event: product.deleted
+  description: when product deleted
+  payload: Product
+- path: /collections/create
+  event: collection.created
+  description: when collection created
+  payload: Collection
+- path: /collections/update
+  event: collection.updated
+  description: when collection updated
+  payload: Collection
+- path: /collections/delete
+  event: collection.deleted
+  description: when collection deleted
+  payload: Collection
+- path: /app/uninstalled
+  event: app.uninstalled
+  description: when convertedin app uninstalled
+  payload: null
+event_count: 13
+payloads_documented:
+- Order
+- Product
+- Customer
+- Collection
+gaps:
+- no AsyncAPI or OpenAPI document describes this surface
+- no documented signature/HMAC verification — authentication is a static bearer-style `token` header
+- no documented retry, backoff, delivery-guarantee or replay behaviour
+- no documented success response body or error catalogue for the receiving endpoint
+- >-
+  the docs link a Postman collection at
+  https://convertedin-assets.s3.eu-west-1.amazonaws.com/convertedIn_webHooks_Api.postman_collection.json
+  — probed 2026-08-12 and it returns HTTP 404 (S3 XML error), so the published
+  collection is a dead link. No `type: Postman` pointer is emitted.

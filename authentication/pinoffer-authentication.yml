@@ -1,0 +1,108 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.converted.in/api-1/getting-started.md,
+  https://developer.converted.in/api-1/categories.md,
+  https://developer.converted.in/api-1/webhooks.md,
+  https://developer.converted.in/loyalty-and-pos-integration/store-info.md,
+  https://developer.converted.in/pixel/client-sdk.md,
+  https://developer.converted.in/dsp/getting-started.md
+note: >-
+  Derived by reading the docs, NOT from an OpenAPI document — Convertedin publishes
+  no machine-readable spec, so there are no `securitySchemes` to parse. Every scheme
+  below is quoted from a published documentation page. All four are static shared
+  secrets; Convertedin publishes no OAuth 2.0, OpenID Connect or mTLS surface, so
+  `scopes/` is intentionally absent rather than empty.
+docs: https://developer.converted.in/api-1/getting-started
+model: static-shared-secret
+oauth2: false
+openid_connect: false
+mutual_tls: false
+schemes:
+- id: store-connector-token
+  applies_to: Store Connector API (the endpoints a merchant implements for Convertedin to poll)
+  type: apiKey
+  in: body
+  parameter: token
+  encoding: multipart/form-data
+  description: >-
+    "Use your token provided inside converted.in after on boarding process to
+    authenticate the request using form-data body." A fixed, non-expiring token
+    issued at onboarding, sent as a form field rather than a header.
+  issued_by: Convertedin platform, at onboarding
+  rotation_documented: false
+  expiry_documented: false
+  source: https://developer.converted.in/api-1/categories.md
+  weaknesses:
+  - >-
+    A credential carried in a form-data body is not covered by standard header
+    redaction and will be written to request logs and proxy traces by default.
+  - No documented rotation, expiry, revocation or scoping.
+- id: webhook-token
+  applies_to: Webhook ingest API (https://app.converted.in/api/webhooks/api/)
+  type: apiKey
+  in: header
+  parameter: token
+  description: >-
+    Fixed token header, paired with a mandatory `X-Shop-Domain` header identifying
+    the sending store. Not a signature — the payload is not signed or hashed, so a
+    receiver cannot verify integrity or replay-protect a delivery.
+  companion_header: X-Shop-Domain
+  rotation_documented: false
+  expiry_documented: false
+  source: https://developer.converted.in/api-1/webhooks.md
+  x-evidence:
+    probed: '2026-08-12'
+    url: https://app.converted.in/api/webhooks/api/orders/create
+    method: POST
+    http_status: 401
+    body: '{"msg":"please send in header [x-shop-domain]"}'
+    note: Auth enforcement observed live on an anonymous request.
+- id: loyalty-pos-access-token
+  applies_to: Loyalty & POS Integration API (the endpoints a POS/loyalty vendor implements)
+  type: apiKey
+  in: header
+  parameter: Access-Token
+  description: >-
+    Custom `Access-Token: {access_token}` header on every GET. Not RFC 6750
+    Bearer — a non-standard header name, so off-the-shelf HTTP clients and agent
+    runtimes will not populate it from a standard credential store.
+  rotation_documented: false
+  expiry_documented: false
+  source: https://developer.converted.in/loyalty-and-pos-integration/store-info.md
+- id: pixel-key
+  applies_to: Convertedin Pixel / Client SDK (browser)
+  type: apiKey
+  in: client-side-init
+  parameter: pixel key
+  description: >-
+    `ciq("init", "{your-pixel-key-goes-here}")`. A public, browser-visible
+    identifier by design — an analytics write key, not a secret. Treat as public.
+  public_by_design: true
+  source: https://developer.converted.in/pixel/client-sdk.md
+- id: dsp-iframe-token
+  applies_to: Convertedin DSP / Flyerz Web SDK (embedded iframe)
+  type: apiKey
+  in: query
+  parameter: token
+  description: >-
+    `https://app-flyerz.converted.in/?token=x` — a portal-config token placed in
+    an iframe `src` query string. The docs say "The token refereed to your portal
+    config, please ask for that", i.e. it is issued by hand, not self-service.
+  rotation_documented: false
+  source: https://developer.converted.in/dsp/getting-started.md
+  weaknesses:
+  - >-
+    A credential in a URL query string leaks through Referer headers, browser
+    history and server access logs.
+end_user_auth:
+  description: >-
+    The Flyerz DSP web SDK authenticates END USERS separately with a phone number
+    plus a one-time password (OTP) delivered by SMS, then links a Facebook ad
+    account. This is a product login flow, not an API credential.
+  source: https://developer.converted.in/dsp/getting-started.md
+gaps:
+- no OAuth 2.0 / OIDC surface, therefore no scopes and no delegated access
+- no documented token rotation, expiry, or revocation for any scheme
+- no signature verification on webhook deliveries
+- no self-service credential issuance — every token is handed out at onboarding
