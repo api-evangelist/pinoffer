@@ -48,6 +48,19 @@ tags:
 - Company
 - Advertising Technology
 - Marketing Technology
+- E-Commerce
+- Marketing Automation
+- Customer Data
+- Lead Generation
+- Payments
+- Emerging Markets
+- MENA
+- Advertising
+- Webhook
+tags_raw:
+- Company
+- Advertising Technology
+- Marketing Technology
 - E-commerce
 - Marketing Automation
 - Customer Data
@@ -71,6 +84,10 @@ apis:
   humanURL: https://developer.converted.in/api-1/webhooks
   baseURL: https://app.converted.in/api/webhooks/api
   tags:
+  - Webhook
+  - E-Commerce
+  - Event
+  tags_raw:
   - Webhooks
   - E-commerce
   - Events
@@ -91,6 +108,9 @@ apis:
   humanURL: https://developer.converted.in/api-1/getting-started
   baseURL: '{store_base_url}/convertedin'
   tags:
+  - E-Commerce
+  - Data Sync
+  tags_raw:
   - E-commerce
   - Data Sync
   properties:
@@ -108,6 +128,10 @@ apis:
   humanURL: https://developer.converted.in/loyalty-and-pos-integration/store-info
   baseURL: '{store_base_url}/api'
   tags:
+  - E-Commerce
+  - Loyalty
+  - Point-of-Sale
+  tags_raw:
   - E-commerce
   - Loyalty
   - Point of Sale
