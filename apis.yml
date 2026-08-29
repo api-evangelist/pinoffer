@@ -19,6 +19,17 @@ description: >-
   publish is any machine-readable contract — no OpenAPI, AsyncAPI, GraphQL schema,
   MCP server or agent card exists on any Convertedin host.
 url: https://raw.githubusercontent.com/api-evangelist/pinoffer/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: 'Self-serve signup for the platform at app.converted.in/register; API
