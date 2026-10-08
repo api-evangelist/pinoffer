@@ -75,3 +75,29 @@ gaps:
 - no overage terms published
 - no machine-readable pricing or product-catalog endpoint
 - no self-service checkout — paid tiers route to a sales conversation
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - negotiated
+  units: []
+  plans:
+  - name: Free Trial
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Growth
+    access: other
+    model: negotiated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Enterprise
+    access: other
+    model: negotiated
+    model_how: derived
+    units: []
+    periods: []
